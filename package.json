@@ -1,0 +1,9 @@
+{
+  "name": "websockets-with-event-scheduler",
+  "version": "0.0.1",
+  "devDependencies": {
+    "websocket": "^1.0.18",
+    "http": "*",
+    "node-schedule": "^0.2.6" 
+  }
+}

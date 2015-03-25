@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <!--
+            #meta
+            #title
+            #etc...
+        -->
+    </head>
+    <body>
+        <input type="text" placeholder="type the msg" id="inputText">
+        <button id="msgToServer">Send the message to the server</button>
+        
+        <div id="allMsg">
+            <ul>
+            </ul>
+        </div>
+
+
+    <script type="text/javascript">
+
+    (function () {
+        if('WebSocket' in window) {
+          window.WebSocket = window.WebSocket || window.MozWebSocket;
+          var connection = new WebSocket('ws://127.0.0.1:1337/');
+          
+          connection.onopen = function () {
+              //connectioned open event called
+          }
+          connection.onerror = function (error) {
+              //TODO: error handler
+          }
+          connection.onmessage = function (message) {
+              console.log(message.data);
+              
+              appendList(message.data)
+          }
+        }
+        else {
+            //TODO: WebSocket is not supported
+        }
+
+        var button = document.getElementById('msgToServer');
+        button.addEventListener('click', messageToServer, false);
+
+        function messageToServer() {
+            var input = document.getElementById('inputText');
+            var inputText = input.value;
+            
+            if(inputText == '')
+                return;
+            
+            connection.send(inputText);
+            
+            input.value = '';
+        }
+        
+        function appendList(msg) {
+            var ul = document.getElementsByTagName('ul')[0];
+            var li = ul.appendChild(document.createElement('li'));
+            li.innerHTML = msg;
+        }
+    })();
+    </script>
+    </body>
+</html>
